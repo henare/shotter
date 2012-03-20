@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+if ARGV.first.nil?
+  puts <<-EOF
+Shotter: Bulk screenshot a list of websites
+
+Usage: shotter site_list.txt
+
+site_list.txt must contain a list of URLs you want to capture with each site
+on a new line, e.g.
+
+  http://google.com
+  http://yahoo.com
+  https://duckduckgo.com/privacy.html
+
+Screenshots will be saved to the current directory as PNGs.
+
+EOF
+  exit false
+end
+
+site_list = File.open(ARGV.first)
+
+require 'selenium-webdriver'
+
+puts "Loading Firefox..."
+driver = Selenium::WebDriver.for(:firefox)
+
+# Resize to a generally good size
+driver.manage.window.resize_to "1280", "960"
+
+site_list.lines.each do |l|
+  # Get rid of newlines and add http if we need to
+  site = (l[URI::regexp(%w(http https))] ? l : "http://#{l}").strip
+
+  puts "Screenshotting #{site}"
+  driver.get site
+  filename = site.downcase.gsub(/https?:\/\//,'').gsub(/\//, '_').gsub(/[^0-9A-za-z.]/,'') + ".png"
+  driver.save_screenshot filename
+end
+
+driver.close
