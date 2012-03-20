@@ -31,10 +31,13 @@ driver.manage.window.resize_to "1280", "960"
 site_list.lines.each do |l|
   # Get rid of newlines and add http if we need to
   site = (l[URI::regexp(%w(http https))] ? l : "http://#{l}").strip
-
+  filename = site.downcase.gsub(/https?:\/\//,'').gsub(/\//, '_').gsub(/[^0-9A-za-z.]/,'') + ".png"
+  if File.exists? filename
+    puts "Skipping already saved site #{site}"
+    next
+  end
   puts "Screenshotting #{site}"
   driver.get site
-  filename = site.downcase.gsub(/https?:\/\//,'').gsub(/\//, '_').gsub(/[^0-9A-za-z.]/,'') + ".png"
   driver.save_screenshot filename
 end
 
