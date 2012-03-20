@@ -1,24 +1,23 @@
 # Shotter
 
-TODO: Write a gem description
+Bulk screenshot a list of websites
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'shotter'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install shotter
 
 ## Usage
 
-TODO: Write usage instructions here
+`shotter site_list.txt`
+
+site_list.txt must contain a list of URLs you want to capture with each site
+on a new line, e.g.
+
+    http://google.com
+    http://yahoo.com
+    https://duckduckgo.com/privacy.html
+
+Screenshots will be saved to the current directory as PNGs.
 
 ## Contributing
 
